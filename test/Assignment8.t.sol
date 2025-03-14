@@ -27,11 +27,13 @@ contract Assignment8Test is Test {
         assertEq(assignment.ownerOf(tokenId), owner, "Owner of token ID 0 should be the test address");
     }
 
-    function testMintNFTByNonOwner() public {
-        address nonOwner = makeAddr("nonOwner");
+   function testMintNFTByNonOwner() public {
+    address nonOwner = makeAddr("nonOwner");
 
-        vm.expectRevert();
-        vm.prank(nonOwner);
-        assignment.mintNFT(temporaryUriForTesting);
-    }
+    vm.startPrank(nonOwner);  // Start acting as nonOwner
+    vm.expectRevert();        // Expect revert before calling mintNFT
+    assignment.mintNFT(temporaryUriForTesting);
+    vm.stopPrank();           // Stop acting as nonOwner
+}
+
 }
